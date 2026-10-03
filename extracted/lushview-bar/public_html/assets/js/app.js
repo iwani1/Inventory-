@@ -17,11 +17,12 @@ function getSidebarHTML() {
   <div class="flex items-center gap-3 min-w-0">
     <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center" style="background:linear-gradient(135deg,#E11D48 0%,#BE123C 100%);border-radius:12px;box-shadow:0 2px 8px rgba(225,29,72,0.3);">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" fill="white" fill-opacity="0.2"/>
-        <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-        <path d="M12 22V12" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-        <path d="M3 7l9 5 9-5" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-        <circle cx="12" cy="12" r="2.5" fill="white" stroke="white" stroke-width="0.5"/>
+        <path d="M4.6 4.4h14.8L12 12.6 4.6 4.4z" fill="white" fill-opacity="0.25"/>
+        <path d="M3.4 4.4h17.2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M5.2 4.4L12 12.4l6.8-8" stroke="white" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M12 12.4V19" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M8.4 19.6h7.2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="17.6" cy="7.4" r="1.5" fill="white"/>
       </svg>
     </div>
     <div class="sidebar-label" style="border-left:1px solid var(--border);padding-left:12px;">
@@ -259,20 +260,44 @@ function initLayout() {
    Sidebar Functionality
    ============================================ */
 function initSidebar() {
-  const toggleBtn = document.getElementById('sidebar-toggle-btn');
-  const sidebar   = document.getElementById('sidebar');
+  const toggleBtn   = document.getElementById('sidebar-toggle-btn');
+  const sidebar     = document.getElementById('sidebar');
+  const mainWrapper = document.getElementById('main-wrapper');
+  let overlay       = document.getElementById('mobile-overlay');
+
+  if (sidebar && !overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'mobile-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  const closeMobile = () => {
+    if (!sidebar) return;
+    sidebar.classList.remove('mobile-open');
+    if (overlay) overlay.classList.remove('show');
+  };
+
+  if (overlay) {
+    overlay.addEventListener('click', closeMobile);
+  }
 
   if (toggleBtn && sidebar) {
     toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
+      if (window.innerWidth < 1024) {
+        const isOpen = sidebar.classList.toggle('mobile-open');
+        if (overlay) overlay.classList.toggle('show', isOpen);
+      } else {
+        const isCollapsed = sidebar.classList.toggle('collapsed');
+        if (mainWrapper) mainWrapper.classList.toggle('sidebar-collapsed', isCollapsed);
+      }
     });
 
     document.addEventListener('click', (e) => {
       if (window.innerWidth < 1024 &&
-          sidebar.classList.contains('open') &&
+          sidebar.classList.contains('mobile-open') &&
           !sidebar.contains(e.target) &&
           !toggleBtn.contains(e.target)) {
-        sidebar.classList.remove('open');
+        closeMobile();
       }
     });
   }

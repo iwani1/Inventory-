@@ -1,7 +1,7 @@
 # Lush View Bar — audit, repair & verification report
 
 **Original archive:** `lushview-bar.zip` (240 KB, 113 entries, CRC-clean)
-**Repaired archive:** `lushview-bar-fixed.zip` (same 92 files, 5 of them rewritten — see below)
+**Repaired archive:** `lushview-bar-fixed.zip` (`SHA-256: a3f5d64772cbf3e1bdfb44d7181297f2118730bcbe3aee8e3b618a170bce35cc`)
 **Extracted working copy:** `extracted/lushview-bar/`
 **Date:** 2026-10-03
 
@@ -56,7 +56,15 @@ Names restored:
 | `users.php` | `$user`, `$pdo`, `$method`, `$id`, `$st`, `$u`, `$b`, `$name`, `$email`, `$pass`, `$role`, `$active`, `$e` |
 | `reports.php` | `$user`, `$pdo`, `$type`, `$from`, `$to`, `$st`, `$sales`, `$cogs`, `$expenses`, `$totalExpenses`, `$revenue`, `$gross`, `$net`, `$margin`, `$rows` |
 
-No other file was touched: the repaired archive differs from the original in exactly those 5 paths.
+### Follow-up UI & Brand Asset Repairs
+
+1. **Sidebar CSS & Mobile Hamburger (`assets/css/app.css`, `assets/js/app.js`, `assets/css/tailwind.css`)**:
+   - `app.js` emits `.sidebar-nav`, `.nav-section-title`, `.nav-link`, and `.nav-label`, whereas `app.css` previously only styled `.nav-item` and `.sidebar-section-label`. `app.css` now styles both selector sets (base, `:hover`, `.active`, and `#sidebar.collapsed`).
+   - Fixed `#sidebar-toggle-btn` in `app.js` so mobile (`< 1024px`) toggles `mobile-open` (matching `@media (max-width: 1023px) #sidebar.mobile-open`) and `#mobile-overlay`, while desktop toggles `collapsed` / `sidebar-collapsed`.
+   - Rebuilt `assets/css/tailwind.css` from `src/input.css` + `tailwind.config.js`.
+2. **Ported PR #2 Bar Assets (`api/install.php`, `assets/img/favicon.svg`, cocktail-glass logo)**:
+   - `api/install.php` now seeds the 8 bar categories (`Spirits`, `Beer & Cider`, `Wine`, `Soft Drinks & Mixers`, `Cocktails`, `Ready-to-Drink`, `Bar Snacks`, `Glassware & Supplies`) and 9 bar units (`Bottle`, `Can`, `Crate`, `Keg`, `Glass`, `Shot`, `Milliliter`, `Liter`, `Pack`).
+   - Added `assets/img/favicon.svg` (linked in all 39 HTML pages) and replaced the cube logo with the cocktail-glass SVG mark in `assets/js/app.js`, `pages/login.html`, and `pages/register.html`.
 
 ## 4. Verification (three independent layers)
 

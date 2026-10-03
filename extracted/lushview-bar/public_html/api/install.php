@@ -13,8 +13,8 @@ if ($has) {
     } else {
         $pdo->prepare("INSERT INTO users(name,email,password_hash,role) VALUES(?,?,?, 'admin')")
             ->execute([$n, $e, password_hash($p, PASSWORD_DEFAULT)]);
-        foreach (['Electronics','Accessories','Furniture','Stationery'] as $x) $pdo->prepare('INSERT OR IGNORE INTO categories(name) VALUES(?)')->execute([$x]);
-        foreach (['Piece','Box','Pack','Kilogram','Liter','Meter','Dozen'] as $x) $pdo->prepare('INSERT OR IGNORE INTO units(name) VALUES(?)')->execute([$x]);
+        foreach (['Spirits','Beer & Cider','Wine','Soft Drinks & Mixers','Cocktails','Ready-to-Drink','Bar Snacks','Glassware & Supplies'] as $x) $pdo->prepare('INSERT OR IGNORE INTO categories(name) VALUES(?)')->execute([$x]);
+        foreach (['Bottle','Can','Crate','Keg','Glass','Shot','Milliliter','Liter','Pack'] as $x) $pdo->prepare('INSERT OR IGNORE INTO units(name) VALUES(?)')->execute([$x]);
         $has = 1; $msg = 'Done! Admin created. DELETE api/install.php now, then log in at pages/login.html.';
     }
 }
