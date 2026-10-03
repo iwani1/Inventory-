@@ -10,7 +10,7 @@ This repository intentionally holds only the shipped artifact and its launcher:
 | **`reset-and-run-fedora.sh`** | Unpacks the zip and serves it locally on Fedora (PHP + SQLite). |
 | `README.md` | This file. |
 
-`lushview-bar-fixed.zip` SHA-256: `055f152e35d48f77a5beb9f4b9f33fe2024a14bedeb60580106c1a8f8ccb9abf`
+`lushview-bar-fixed.zip` SHA-256: `b0a96961fc3de568fa1d88d3947f671ae9ef7b4f0661090c492fb9f3c5fbec21`
 
 Everything else — superseded archives, report documents, and the `extracted/` / `tests/` scratch trees — has been removed. The prior builds remain in git history (`git log --diff-filter=D --name-only`).
 
@@ -128,6 +128,81 @@ protect against this: referencing an identifier that was never declared throws a
 (see `products.js`: `.action-btn` + `.action-dropdown-menu`) — one menu open at a time,
 toggle on click, dismiss on an outside click — and re-binds after each render because rows
 are replaced wholesale. Rows already bound are skipped via `data-action-bound`.
+
+## Roles & Permissions
+
+Four roles, matching the Invenza taxonomy. `users.role` stores the **key**; the
+display name is in `ROLE_DEFS` (`api/db.php`) and mirrored by `ROLE_LABELS`
+(`assets/js/pages.js`) so the Users table, the user form and the Roles page
+cannot drift apart.
+
+| Key | Display name | Badge | Default grants |
+|---|---|---|---|
+| `admin` | Administrator | Active | every module, every action |
+| `manager` | Store Manager | Custom | inventory (view/create/edit), sales (all), purchases, customers, expenses, reports (view) |
+| `staff` | Cashier | Restricted | sales (view/create), inventory (view), customers (view/create) |
+| `clerk` | Inventory Clerk | Restricted | inventory (view/edit), purchases (view/create/edit), sales (view), reports (view) |
+
+`staff` is the Cashier key. It is kept because existing rows already use it.
+
+### Storage
+
+```sql
+roles(role_key PRIMARY KEY, name, badge, description)
+role_permissions(role_key, module, action, PRIMARY KEY(role_key, module, action))
+```
+
+Both are created by `ensure_schema()` and seeded by `seed_roles()`. Seeding is
+**skipped for any role that already has rows**, so edits made through the UI
+survive a restart and a re-unpack.
+
+7 modules × 4 actions (`view`, `create`, `edit`, `delete`):
+`inventory`, `sales`, `purchases`, `customers`, `expenses`, `reports`, `system`.
+
+### Enforcement
+
+`require_perm($user, $module, $action)` in `api/db.php` reads the matrix and 403s
+with the module and action named. Admin short-circuits to `true`.
+
+| Endpoint | Guard |
+|---|---|
+| `products.php` | `inventory` view / create / edit / delete |
+| `stock.php` | GET `inventory:view`, POST `inventory:edit` (an adjustment is an inventory edit) |
+| `crud.php` | per resource — categories/brands/units → `inventory`, customers → `customers`, suppliers → `purchases`, expenses → `expenses` |
+| `sales.php` | GET `sales:view`, POST `sales:create` |
+| `purchases.php` | GET `purchases:view`, POST `purchases:create` |
+| `reports.php` | `reports:view` |
+| `users.php` | `system` view / create / edit / delete |
+| `roles.php` | GET `system:view`, POST `system:edit` |
+
+`dashboard.php`, `lookups.php` and `auth.php` require only that you are logged in.
+The dashboard is a cross-module summary, so it is deliberately **not** behind
+`reports:view` — a Cashier who cannot open the P&L report can still see the
+dashboard's headline figures.
+
+Before this, `require_role()` was applied to only three endpoints, so a Cashier
+could record purchases, adjust stock and read the full profit & loss statement
+while the Roles page claimed otherwise. `require_role()` still exists but is now
+unused; prefer `require_perm()`.
+
+### The UI
+
+`users/roles.html` renders the four roles as cards with live member counts, and a
+7×4 checkbox matrix for the selected role, with Select All / Deselect All.
+**Save Permissions** POSTs to `roles.php`, which replaces that role's grants
+inside a transaction and returns the whole matrix so the page refreshes from
+server state rather than from local assumptions.
+
+Two guard rails: the Administrator role is read-only (it bypasses the matrix, so
+letting you untick its boxes would be a lie), and you cannot save a change that
+removes your own `system:edit` grant.
+
+### Known gaps
+
+There is still no warehouse or branch concept anywhere in the schema, so the
+Invenza "Assigned Warehouse" column is not reproduced. There is no `last_login`
+column, so the "Last Login" column is not reproduced either. Both would need
+schema changes.
 
 ## Rebuilding the CSS
 
