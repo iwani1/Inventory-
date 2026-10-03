@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Lush View Bar</title>
+  <meta name="description" content="Manage your product inventory in Lush View Bar.">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/tailwind.css">
+<script>try{if(localStorage.getItem('sf_theme')==="dark"){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")}}catch(e){}</script>
+<script src="../assets/js/auth-guard.js"></script>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <div id="main-wrapper">
+    <div id="header-container"></div>
+    <main class="flex-1 p-4 md:p-6">
+
+      <!-- Page Header -->
+      <div class="page-header animate-slideInUp">
+        <div>
+          <div class="breadcrumb"><a href="../dashboard.html">Home</a><span class="sep">/</span><span class="current">Products</span></div>
+          <h1 class="page-title">Products</h1>
+          <p class="page-subtitle">Manage your product catalog and inventory.</p>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-secondary" aria-label="Import products" onclick="Toast.info('Import feature available in full version.','Import')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Import
+          </button>
+          <button class="btn btn-secondary" aria-label="Export products" onclick="Toast.info('Exporting products...','Export')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Export
+          </button>
+          <a href="add-product.html" class="btn btn-primary" aria-label="Add new product">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Product
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <section class="page-section" aria-label="Product statistics">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+          <div class="stat-card animate-slideInUp stagger-1">
+            <div class="stat-card-header">
+              <div class="stat-card-icon icon-bg-info">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-label">Total Products</div>
+              <div class="stat-value">15</div>
+            </div>
+          </div>
+          <div class="stat-card animate-slideInUp stagger-2">
+            <div class="stat-card-header">
+              <div class="stat-card-icon icon-bg-success">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-label">In Stock</div>
+              <div class="stat-value text-[var(--primary)]">11</div>
+            </div>
+          </div>
+          <div class="stat-card animate-slideInUp stagger-3">
+            <div class="stat-card-header">
+              <div class="stat-card-icon icon-bg-warning">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-label">Low Stock</div>
+              <div class="stat-value text-[var(--warning)]">3</div>
+            </div>
+          </div>
+          <div class="stat-card animate-slideInUp stagger-4">
+            <div class="stat-card-header">
+              <div class="stat-card-icon icon-bg-danger">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-label">Out of Stock</div>
+              <div class="stat-value text-[var(--danger)]">1</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filter Bar -->
+      <section class="page-section" aria-label="Product filters">
+        <div class="filter-bar mb-5 animate-slideInUp stagger-3">
+          <div class="search-box">
+            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="products-search" type="text" class="form-input" placeholder="Search products...">
+          </div>
+          <select id="products-category-filter" class="form-input form-select">
+            <option value="">All Categories</option>
+            <option>Electronics</option>
+            <option>Accessories</option>
+            <option>Furniture</option>
+          </select>
+          <select id="products-stock-filter" class="form-input form-select">
+            <option value="all">All Stock Status</option>
+            <option value="in-stock">In Stock</option>
+            <option value="low-stock">Low Stock</option>
+            <option value="out-of-stock">Out of Stock</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Products Table -->
+      <section class="page-section" aria-label="Products table">
+        <div class="card animate-slideInUp stagger-4 p-0 overflow-hidden">
+          <!-- Bulk action bar -->
+          <div id="products-table-bulk" class="hidden items-center gap-3 py-3 px-4 bg-[var(--primary-light)] border-b border-[var(--border)]">
+            <span class="bulk-count text-sm font-semibold text-[var(--primary)]"></span>
+            <button class="btn btn-secondary btn-sm" aria-label="Update status of selected products" onclick="Toast.info('Status updated!','Bulk Action')">Update Status</button>
+            <button class="btn btn-danger btn-sm" aria-label="Delete selected products" onclick="Toast.info('Items deleted!','Bulk Delete')">Delete Selected</button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="data-table" id="products-table">
+              <caption class="sr-only">Products inventory listing</caption>
+              <thead>
+                <tr>
+                  <th class="w-10"><input type="checkbox" class="select-all" aria-label="Select all rows"></th>
+                  <th data-sort="name">Product</th>
+                  <th data-sort="sku">SKU</th>
+                  <th data-sort="category">Category</th>
+                  <th>Stock Status</th>
+                  <th data-sort="stock">Qty</th>
+                  <th data-sort="purchasePrice">Purchase Price</th>
+                  <th data-sort="sellingPrice">Selling Price</th>
+                  <th data-sort="status">Status</th>
+                  <th data-sort="created">Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="11" class="text-center p-10 text-[var(--muted)]">Loading products...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table Footer -->
+          <div class="table-footer mt-[20px] pl-[15px] pb-[20px]">
+            <div id="products-table-info" class="table-footer-info"></div>
+            <div id="products-table-pagination" class="table-footer-actions">
+              <div class="pagination"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <footer class="app-footer">
+      <div class="app-footer-text">Copyright © 2026 Lush View Bar All rights reserved.</div>
+    </footer>
+  </div>
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2.5"></div>
+  <script>window.BASE_PATH = '../'; window.CURRENT_PAGE = 'products';</script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/tables.js"></script>
+  <script src="../assets/js/products.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Settings — Lush View Bar</title>
+  <meta name="description" content="Configure enterprise profile, business currency, date format, and company branding.">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/tailwind.css">
+<script>try{if(localStorage.getItem('sf_theme')==="dark"){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")}}catch(e){}</script>
+<script src="../assets/js/auth-guard.js"></script>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <div id="main-wrapper">
+    <div id="header-container"></div>
+    <main class="flex-1 p-6">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb">
+            <a href="../dashboard.html">Home</a>
+            <span class="sep">/</span>
+            <span class="current">Settings</span>
+          </div>
+          <h1 class="page-title">Company &amp; General Settings</h1>
+          <p class="page-subtitle">Configure your enterprise information, localization, currencies, and brand name.</p>
+        </div>
+      </div>
+
+      <!-- Settings Nav Tabs -->
+      <div class="settings-nav-tabs flex gap-2 border-b border-[var(--border)] pb-3 mb-6 overflow-x-auto">
+        <a href="general.html" class="btn btn-primary btn-sm">General</a>
+        <a href="inventory.html" class="btn btn-secondary btn-sm">Inventory</a>
+        <a href="sales.html" class="btn btn-secondary btn-sm">Sales &amp; POS</a>
+        <a href="purchases.html" class="btn btn-secondary btn-sm">Purchases</a>
+        <a href="notifications.html" class="btn btn-secondary btn-sm">Notifications</a>
+      </div>
+
+      <!-- General Settings Form -->
+      <form id="gen-settings-form" class="max-w-4xl">
+        <div class="card mb-6">
+          <div class="card-header mb-4 pb-3 border-b border-[var(--border)]">
+            <h3 class="card-title">Company Profile</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="form-label" for="company-name">Company / Business Name <span class="required">*</span></label>
+              <input id="company-name" type="text" class="form-input" required>
+            </div>
+            <div>
+              <label class="form-label" for="tax-vat">Tax / VAT Registration Number</label>
+              <input id="tax-vat" type="text" class="form-input" placeholder="e.g. VAT-12345678">
+            </div>
+            <div>
+              <label class="form-label" for="support-email">Official Support Email</label>
+              <input id="support-email" type="email" class="form-input" placeholder="contact@example.com">
+            </div>
+            <div>
+              <label class="form-label" for="business-phone">Official Business Phone</label>
+              <input id="business-phone" type="text" class="form-input" placeholder="+1 (555) 000-0000">
+            </div>
+            <div class="col-span-full">
+              <label class="form-label" for="hq-address">Headquarters Address</label>
+              <input id="hq-address" type="text" class="form-input" placeholder="City, Country">
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-6">
+          <div class="card-header mb-4 pb-3 border-b border-[var(--border)]">
+            <h3 class="card-title">Localization &amp; Currency</h3>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="form-label" for="base-currency">Currency Symbol</label>
+              <select id="base-currency" class="form-input form-select">
+                <option value="GH₵">GH₵ — Ghana Cedi (GH₵)</option>
+                <option value="$">$ — US Dollar ($)</option>
+                <option value="£">£ — British Pound (£)</option>
+                <option value="€">€ — Euro (€)</option>
+                <option value="₦">₦ — Nigerian Naira (₦)</option>
+                <option value="KSh">KSh — Kenyan Shilling (KSh)</option>
+                <option value="ZAR">R — South African Rand (R)</option>
+                <option value="₹">₹ — Indian Rupee (₹)</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="date-format">Date Format</label>
+              <select id="date-format" class="form-input form-select">
+                <option selected>YYYY-MM-DD (e.g. 2026-10-03)</option>
+                <option>DD/MM/YYYY (e.g. 03/10/2026)</option>
+                <option>MM/DD/YYYY (e.g. 10/03/2026)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button type="submit" class="btn btn-primary" aria-label="Save general settings">Save General Settings</button>
+        </div>
+      </form>
+
+    </main>
+    <footer class="app-footer">
+      <span class="app-footer-text">Copyright © 2026 Lush View Bar All rights reserved.</span>
+    </footer>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2.5"></div>
+  <script>window.BASE_PATH = '../'; window.CURRENT_PAGE = 'settings-general';</script>
+  <script src="../assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const biz = localStorage.getItem('lushview_biz') || 'Lush View Bar';
+      const cur = localStorage.getItem('lushview_cur') || 'GH₵';
+      const tax = localStorage.getItem('lushview_tax') || '';
+      const email = localStorage.getItem('lushview_email') || '';
+      const phone = localStorage.getItem('lushview_phone') || '';
+      const addr = localStorage.getItem('lushview_addr') || '';
+
+      document.getElementById('company-name').value = biz;
+      document.getElementById('base-currency').value = cur;
+      document.getElementById('tax-vat').value = tax;
+      document.getElementById('support-email').value = email;
+      document.getElementById('business-phone').value = phone;
+      document.getElementById('hq-address').value = addr;
+
+      document.getElementById('gen-settings-form').onsubmit = (e) => {
+        e.preventDefault();
+        localStorage.setItem('lushview_biz', document.getElementById('company-name').value.trim());
+        localStorage.setItem('lushview_cur', document.getElementById('base-currency').value);
+        localStorage.setItem('lushview_tax', document.getElementById('tax-vat').value.trim());
+        localStorage.setItem('lushview_email', document.getElementById('support-email').value.trim());
+        localStorage.setItem('lushview_phone', document.getElementById('business-phone').value.trim());
+        localStorage.setItem('lushview_addr', document.getElementById('hq-address').value.trim());
+        Toast.success('General settings saved successfully!', 'Settings Saved');
+      };
+    });
+  </script>
+</body>
+</html>
