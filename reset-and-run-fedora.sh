@@ -115,6 +115,22 @@ if ! check_php_sqlite && command -v dnf >/dev/null 2>&1; then
     || true
 fi
 
+# api/db.php declares `function json_out(...): never` and `fail(...): never`.
+# The `never` return type is PHP 8.1+, so on PHP 8.0 or older every /api/*.php
+# request dies with a fatal parse error. Fail here with a clear message instead
+# of starting a server that 500s on every call.
+if command -v php >/dev/null 2>&1; then
+  PHP_VERSION_ID="$(php -r 'echo PHP_VERSION_ID;' 2>/dev/null || echo 0)"
+  if [[ "${PHP_VERSION_ID}" =~ ^[0-9]+$ ]] && (( PHP_VERSION_ID < 80100 )); then
+    echo "ERROR: PHP 8.1 or newer is required (found $(php -r 'echo PHP_VERSION;' 2>/dev/null || echo 'unknown'))." >&2
+    echo "       api/db.php uses the 'never' return type, which PHP 8.0 cannot parse," >&2
+    echo "       so every /api/*.php request would fail." >&2
+    echo "       Fedora:  sudo dnf install -y php-cli php-pdo sqlite" >&2
+    echo "       Debian:  sudo apt install -y php8.1-cli php8.1-sqlite3" >&2
+    exit 1
+  fi
+fi
+
 if ! check_php_sqlite; then
   echo "ERROR: PHP with the pdo_sqlite extension is required but not active." >&2
   echo "       Fedora:  sudo dnf install -y php-cli php-pdo sqlite" >&2
