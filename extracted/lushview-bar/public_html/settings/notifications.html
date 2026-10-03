@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Settings — Lush View Bar</title>
+  <meta name="description" content="Configure low stock alert notifications, automated email digests, and SMS updates.">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/tailwind.css">
+<script>try{if(localStorage.getItem('sf_theme')==="dark"){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")}}catch(e){}</script>
+<script src="../assets/js/auth-guard.js"></script>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <div id="main-wrapper">
+    <div id="header-container"></div>
+    <main class="flex-1 p-6">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb">
+            <a href="../dashboard.html">Home</a>
+            <span class="sep">/</span>
+            <a href="general.html">Settings</a>
+            <span class="sep">/</span>
+            <span class="current">Notifications</span>
+          </div>
+          <h1 class="page-title">Notification Preferences</h1>
+          <p class="page-subtitle">Manage automated stockout warnings, sales alerts, and daily digest dispatches.</p>
+        </div>
+      </div>
+
+      <!-- Settings Nav Tabs -->
+      <div class="settings-nav-tabs flex gap-2 border-b border-[var(--border)] pb-3 mb-6 overflow-x-auto">
+        <a href="general.html" class="btn btn-secondary btn-sm">General</a>
+        <a href="inventory.html" class="btn btn-secondary btn-sm">Inventory</a>
+        <a href="sales.html" class="btn btn-secondary btn-sm">Sales &amp; POS</a>
+        <a href="purchases.html" class="btn btn-secondary btn-sm">Purchases</a>
+        <a href="notifications.html" class="btn btn-primary btn-sm">Notifications</a>
+      </div>
+
+      <form onsubmit="event.preventDefault(); Toast.success('Notification settings saved!','Preferences Saved');" class="max-w-4xl">
+        <div class="card mb-6">
+          <div class="card-header mb-4 pb-3 border-b border-[var(--border)]">
+            <h3 class="card-title">Alert Trigger Conditions</h3>
+          </div>
+          
+          <div class="flex flex-col gap-4.5">
+            
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <div class="font-semibold text-[var(--text)] text-sm">Low Stock Item Alert</div>
+                <div class="text-xs text-[var(--muted)] mt-0.5">Send an immediate email when a product reaches its minimum safety stock level.</div>
+              </div>
+              <input type="checkbox" checked class="w-[18px] h-[18px] accent-[var(--primary)] cursor-pointer shrink-0">
+            </div>
+
+            <div class="border-t border-[var(--border)] pt-4 flex items-start justify-between gap-4">
+              <div>
+                <div class="font-semibold text-[var(--text)] text-sm">Daily Sales &amp; Stock Digest</div>
+                <div class="text-xs text-[var(--muted)] mt-0.5">Receive an automated morning summary of daily revenue, top sellers, and low inventory items at 8:00 AM.</div>
+              </div>
+              <input type="checkbox" checked class="w-[18px] h-[18px] accent-[var(--primary)] cursor-pointer shrink-0">
+            </div>
+
+            <div class="border-t border-[var(--border)] pt-4 flex items-start justify-between gap-4">
+              <div>
+                <div class="font-semibold text-[var(--text)] text-sm">Customer Invoice Overdue Warnings</div>
+                <div class="text-xs text-[var(--muted)] mt-0.5">Automatically dispatch reminder emails to clients 3 days before and on due date.</div>
+              </div>
+              <input type="checkbox" checked class="w-[18px] h-[18px] accent-[var(--primary)] cursor-pointer shrink-0">
+            </div>
+
+            <div class="border-t border-[var(--border)] pt-4 flex items-start justify-between gap-4">
+              <div>
+                <div class="font-semibold text-[var(--text)] text-sm">Purchase Order Inbound Receipt</div>
+                <div class="text-xs text-[var(--muted)] mt-0.5">Notify warehouse manager when a supplier delivery is marked received.</div>
+              </div>
+              <input type="checkbox" checked class="w-[18px] h-[18px] accent-[var(--primary)] cursor-pointer shrink-0">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card mb-6">
+          <div class="card-header mb-4 pb-3 border-b border-[var(--border)]">
+            <h3 class="card-title">Alert Recipients</h3>
+          </div>
+          
+          <div class="flex flex-col gap-4">
+            <div>
+              <label class="form-label" for="alert-email">Alert Notification Email Address <span class="required">*</span></label>
+              <input id="alert-email" type="email" class="form-input" value="admin@lushview.com" required>
+            </div>
+            <div>
+              <label class="form-label" for="supervisor-sms">Warehouse Supervisor SMS Phone (Optional)</label>
+              <input id="supervisor-sms" type="text" class="form-input" placeholder="+1 (555) 019-2834">
+            </div>
+            <div>
+              <button type="button" class="btn btn-secondary btn-sm" aria-label="Send test alert notification" onclick="Toast.success('Test alert notification sent to admin@lushview.com!','Test Sent')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Send Test Alert
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button type="submit" class="btn btn-primary" aria-label="Save notification preferences">Save Notification Preferences</button>
+        </div>
+      </form>
+
+    </main>
+    <footer class="app-footer">
+      <span class="app-footer-text">Copyright © 2026 Lush View Bar All rights reserved.</span>
+    </footer>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2.5"></div>
+  <script>window.BASE_PATH = '../'; window.CURRENT_PAGE = 'settings-notifications';</script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

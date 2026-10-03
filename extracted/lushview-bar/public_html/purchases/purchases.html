@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchases — Lush View Bar</title>
+  <meta name="description" content="Manage vendor purchase orders, costs, and received inventory.">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/tailwind.css">
+<script>try{if(localStorage.getItem('sf_theme')==="dark"){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")}}catch(e){}</script>
+<script src="../assets/js/auth-guard.js"></script>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <div id="main-wrapper">
+    <div id="header-container"></div>
+    <main class="flex-1 p-6" id="app-root"></main>
+    <footer class="app-footer">
+      <div class="app-footer-text">Copyright © 2026 Lush View Bar All rights reserved.</div>
+    </footer>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2.5"></div>
+  <script>window.BASE_PATH = '../'; window.CURRENT_PAGE = 'purchases';</script>
+  <script src="../assets/js/app.js"></script>
+<script>window.PAGE_KIND="purchases";</script>
+<script src="../assets/js/pages.js"></script>
+</body>
+</html>
