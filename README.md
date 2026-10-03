@@ -10,7 +10,7 @@ This repository intentionally holds only the shipped artifact and its launcher:
 | **`reset-and-run-fedora.sh`** | Unpacks the zip and serves it locally on Fedora (PHP + SQLite). |
 | `README.md` | This file. |
 
-`lushview-bar-fixed.zip` SHA-256: `99c6d45a5314ded1197b7e58352db048e73fa637d615029b9b4d626f76b3c936`
+`lushview-bar-fixed.zip` SHA-256: `055f152e35d48f77a5beb9f4b9f33fe2024a14bedeb60580106c1a8f8ccb9abf`
 
 Everything else — superseded archives, report documents, and the `extracted/` / `tests/` scratch trees — has been removed. The prior builds remain in git history (`git log --diff-filter=D --name-only`).
 
@@ -114,6 +114,20 @@ tiles are replaced with figures the database actually holds:
 | Will Be Received | Stock Value | No purchase-order receiving workflow exists |
 | Cancelled Orders | Outstanding (to suppliers) | `purchases` has no status column |
 | Returns | Paid to Suppliers | Returns are not persisted as records |
+
+## Inventory table / row action menus
+
+`assets/js/tables.js` called `initActionDropdowns()` on every `DataTable.render()`, but no file
+in the build defined it. The `initActionDropdowns && initActionDropdowns()` guard does not
+protect against this: referencing an identifier that was never declared throws a
+`ReferenceError` (unlike reading an `undefined` property), so **every** render of
+`inventory/products.html` aborted and the product table came up blank.
+
+`initActionDropdowns()` is now defined in `tables.js` and the call is guarded with
+`typeof ... === 'function'`. It binds the per-row action menu that row templates emit
+(see `products.js`: `.action-btn` + `.action-dropdown-menu`) — one menu open at a time,
+toggle on click, dismiss on an outside click — and re-binds after each render because rows
+are replaced wholesale. Rows already bound are skipped via `data-action-bound`.
 
 ## Rebuilding the CSS
 
