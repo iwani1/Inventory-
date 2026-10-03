@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Settings — Lush View Bar</title>
+  <meta name="description" content="Configure vendor procurement policies, PO numbering, and automated approval limits.">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/tailwind.css">
+<script>try{if(localStorage.getItem('sf_theme')==="dark"){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")}}catch(e){}</script>
+<script src="../assets/js/auth-guard.js"></script>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <div id="main-wrapper">
+    <div id="header-container"></div>
+    <main class="flex-1 p-6">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb">
+            <a href="../dashboard.html">Home</a>
+            <span class="sep">/</span>
+            <a href="general.html">Settings</a>
+            <span class="sep">/</span>
+            <span class="current">Purchase Settings</span>
+          </div>
+          <h1 class="page-title">Purchases &amp; Procurement Settings</h1>
+          <p class="page-subtitle">Configure vendor ordering policies, reference prefixes, and authorization limits.</p>
+        </div>
+      </div>
+
+      <!-- Settings Nav Tabs -->
+      <div class="settings-nav-tabs flex gap-2 border-b border-[var(--border)] pb-3 mb-6 overflow-x-auto">
+        <a href="general.html" class="btn btn-secondary btn-sm">General</a>
+        <a href="inventory.html" class="btn btn-secondary btn-sm">Inventory</a>
+        <a href="sales.html" class="btn btn-secondary btn-sm">Sales &amp; POS</a>
+        <a href="purchases.html" class="btn btn-primary btn-sm">Purchases</a>
+        <a href="notifications.html" class="btn btn-secondary btn-sm">Notifications</a>
+      </div>
+
+      <form onsubmit="event.preventDefault(); Toast.success('Purchase settings saved successfully!','Settings Updated');" class="max-w-4xl">
+        <div class="card mb-6">
+          <div class="card-header mb-4 pb-3 border-b border-[var(--border)]">
+            <h3 class="card-title">Purchase Order Numbering &amp; Defaults</h3>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label" for="po-prefix">Purchase Order Prefix</label>
+              <input id="po-prefix" type="text" class="form-input" value="PO-">
+              <div class="text-[11px] text-[var(--muted)] mt-1">Generated format: PO-00049</div>
+            </div>
+            <div>
+              <label class="form-label" for="pret-prefix">Purchase Return Prefix</label>
+              <input id="pret-prefix" type="text" class="form-input" value="PRET-">
+              <div class="text-[11px] text-[var(--muted)] mt-1">Generated format: PRET-0013</div>
+            </div>
+            <div>
+              <label class="form-label" for="supplier-payment-terms">Default Supplier Payment Terms</label>
+              <select id="supplier-payment-terms" class="form-input form-select">
+                <option selected>Net 30 Days</option>
+                <option>Net 15 Days</option>
+                <option>Net 45 Days</option>
+                <option>Cash on Delivery (COD)</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="auto-approval-threshold">Auto-Approval Threshold ($)</label>
+              <input id="auto-approval-threshold" type="number" class="form-input" value="2500" min="0">
+              <div class="text-[11px] text-[var(--muted)] mt-1">POs above this limit require Admin sign-off</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-6">
+          <div class="card-header mb-4 pb-3 border-b border-[var(--border)]">
+            <h3 class="card-title">Receiving Policies</h3>
+          </div>
+          
+          <div class="flex flex-col gap-3">
+            <label class="flex items-center gap-2.5 cursor-pointer text-[13px] font-medium text-[var(--text)]">
+              <input type="checkbox" checked class="w-4 h-4 accent-[var(--primary)]">
+              Automatically increase product stock levels when purchase order status is marked "Received"
+            </label>
+            <label class="flex items-center gap-2.5 cursor-pointer text-[13px] font-medium text-[var(--text)]">
+              <input type="checkbox" checked class="w-4 h-4 accent-[var(--primary)]">
+              Require barcode verification scan upon receiving inbound items at warehouse
+            </label>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button type="submit" class="btn btn-primary" aria-label="Save purchase settings">Save Purchase Settings</button>
+        </div>
+      </form>
+
+    </main>
+    <footer class="app-footer">
+      <span class="app-footer-text">Copyright © 2026 Lush View Bar All rights reserved.</span>
+    </footer>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2.5"></div>
+  <script>window.BASE_PATH = '../'; window.CURRENT_PAGE = 'settings-purchases';</script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

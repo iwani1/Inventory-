@@ -1,0 +1,5 @@
+# Dependencies for the local preview / test harnesses (install with npm)
+node_modules/
+
+# Scratch: extracted copies of the sibling archives, used only for comparison
+extracted/_others/
